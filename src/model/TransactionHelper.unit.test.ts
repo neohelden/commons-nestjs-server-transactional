@@ -26,28 +26,28 @@ describe("transactionHelper", () => {
 
   it("should start a transaction", async () => {
     await helper.transaction(() => Promise.resolve());
-    expect(dataManagerMock.startTransaction).toHaveBeenCalled();
+    expect(dataManagerMock.startTransaction).toHaveBeenCalledTimes(1);
   });
 
   it("should commit a transaction", async () => {
     await helper.transaction(() => Promise.resolve());
-    expect(dataManagerMock.commitTransaction).toHaveBeenCalled();
+    expect(dataManagerMock.commitTransaction).toHaveBeenCalledTimes(1);
   });
 
   it("should rollback a transaction", async () => {
     await expect(helper.transaction(() => Promise.reject("ERR"))).rejects.toBe(
-      "ERR"
+      "ERR",
     );
 
-    expect(dataManagerMock.rollbackTransaction).toHaveBeenCalled();
+    expect(dataManagerMock.rollbackTransaction).toHaveBeenCalledTimes(1);
   });
 
   it("should release a transaction", async () => {
     await helper.transaction(() => Promise.resolve());
-    expect(dataManagerMock.release).toHaveBeenCalled();
+    expect(dataManagerMock.release).toHaveBeenCalledTimes(1);
   });
 
-  it("Should create only one DataManager in consecutive transactions", async () => {
+  it("should create only one DataManager in consecutive transactions", async () => {
     await helper.transaction(async () => {
       await helper.transaction(() => Promise.resolve());
     });
@@ -68,7 +68,7 @@ describe("transactionHelper", () => {
     });
 
     expect(transactionHelperOptionsMock.getDataManager).toHaveBeenCalledTimes(
-      1
+      1,
     );
   });
 });

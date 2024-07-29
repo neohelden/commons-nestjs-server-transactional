@@ -26,7 +26,7 @@ export class TransactionHelper<T extends DataManager = DataManager> {
    */
   constructor(
     @Inject(getTransactionHelperOptionsToken())
-    private options: TransactionHelperOptions<T>
+    private options: TransactionHelperOptions<T>,
   ) {}
 
   /**
@@ -47,7 +47,7 @@ export class TransactionHelper<T extends DataManager = DataManager> {
    * @returns The return value of the function
    */
   public async transaction<A>(
-    runInTransaction: (manager: T) => Promise<A>
+    runInTransaction: (manager: T) => Promise<A>,
   ): Promise<A> {
     const [manager, fromStorage] = await this.getDataManager();
 
@@ -55,13 +55,13 @@ export class TransactionHelper<T extends DataManager = DataManager> {
       this.logger.verbose("Starting transaction");
       await manager.startTransaction();
       return this.storage.run(manager, () =>
-        this.definetelyInAsyncScope<A>(fromStorage, manager, runInTransaction)
+        this.definetelyInAsyncScope<A>(fromStorage, manager, runInTransaction),
       );
     } else {
       return this.definetelyInAsyncScope<A>(
         fromStorage,
         manager,
-        runInTransaction
+        runInTransaction,
       );
     }
   }
@@ -69,7 +69,7 @@ export class TransactionHelper<T extends DataManager = DataManager> {
   private async definetelyInAsyncScope<A>(
     fromStorage: boolean,
     manager: T,
-    runInTransaction: (manager: T) => Promise<A>
+    runInTransaction: (manager: T) => Promise<A>,
   ): Promise<A> {
     try {
       const returnVal = await runInTransaction(manager);

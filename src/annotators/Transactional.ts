@@ -18,7 +18,7 @@ export function Transactional(options?: TransactionalOptions): MethodDecorator {
   return function decorate(
     target: object,
     propertyKey: string | symbol,
-    descriptor: PropertyDescriptor
+    descriptor: PropertyDescriptor,
   ) {
     inject(target, "transactional-helper-" + propertyKey.toString());
 
@@ -35,12 +35,12 @@ export function Transactional(options?: TransactionalOptions): MethodDecorator {
       const manager = helper.getStoredManager();
       if (manager !== undefined) {
         logger.verbose(
-          "Transactional decorator already has a manager. Using it."
+          "Transactional decorator already has a manager. Using it.",
         );
         return originalMethod.apply(this, args);
       }
       logger.verbose(
-        "Transactional decorator does not have a manager. Creating one."
+        "Transactional decorator does not have a manager. Creating one.",
       );
 
       let currentTime;
@@ -58,7 +58,7 @@ export function Transactional(options?: TransactionalOptions): MethodDecorator {
           const diff = process.hrtime(currentTime);
           const time = diff[0] * MICROSECONDS_IN_SECONDS + diff[1];
           logger.verbose(
-            `Transaction took ${time / MILLISECONDS_IN_SECONDS}ms`
+            `Transaction took ${time / MILLISECONDS_IN_SECONDS}ms`,
           );
         }
       }

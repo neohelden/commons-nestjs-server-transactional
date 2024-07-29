@@ -18,7 +18,7 @@ class DecoratedMock {
 
   @Transactional()
   public async valueThrow(): Promise<void> {
-    throw "ERR";
+    throw new Error("ERR");
   }
 }
 
