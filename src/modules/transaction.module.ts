@@ -6,7 +6,8 @@ import {
   type OptionalFactoryDependency,
   type Provider,
 } from "@nestjs/common";
-import TransactionHelper, {
+import {
+  TransactionHelper,
   TransactionHelperOptions,
 } from "../model/TransactionHelper";
 import { DataManager } from "../model/DataManager";

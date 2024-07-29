@@ -11,9 +11,7 @@ export interface TransactionalOptions {
 const MICROSECONDS_IN_SECONDS = 1e9;
 const MILLISECONDS_IN_SECONDS = 1e6;
 
-export default function Transactional(
-  options?: TransactionalOptions
-): MethodDecorator {
+export function Transactional(options?: TransactionalOptions): MethodDecorator {
   const logger = new Logger(Transactional.name);
   const inject = Inject(TransactionHelper);
 
