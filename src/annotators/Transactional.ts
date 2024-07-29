@@ -1,5 +1,5 @@
 import { Inject, Logger } from "@nestjs/common";
-import TransactionHelper from "../model/TransactionHelper";
+import { TransactionHelper } from "../model/TransactionHelper";
 
 export interface TransactionalOptions {
   /**
