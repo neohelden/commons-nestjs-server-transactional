@@ -7,45 +7,49 @@ The transactional service is build in a way, that any underlying database or tra
 ## Transaction Bundle
 
 The decisions are available to the Application using decorators. 
-An example for OPA enabled decision is: 
+An example to load the module with TypeORM is: 
+
 
 ```typescript
+import { TransactionHelper, Transactional } from "@neohelden/nestjs-server-transactional";
 
+class Book {
+    @Transaction()
+    async save(book: Book): Promise<Book> {
+        repository.save(book);
+        return book;
+    }
+}
+
+class Repository {
+    constructor(private readonly helper: TransactionHelper) {}
+
+    @Transactional()
+    async save(book: Book): Promise<Book> {
+        return helper.transaction(async (dataManager) => {
+          dataManager.dave(book);
+        })
+    }
+}
 ```
 
 ## Configuration 
 
 The configuration of this module is accomplished using NestJS Dynamic modules. 
-Therefore import the `AuthModule` in your `AppModule` and provide the configuration.
+Therefore import the `TransactionModule` in your `AppModule` and provide the configuration.
 
 Example: 
 
 ```typescript
-AuthModule.forRootAsync({
-  isGlobal: true,
-  useFactory: async (configService: ConfigService) => {
-    console.log("Using factory");
+TransactionModule.forRootAsync({
+  useFactory: (ds: DataSource) => {
     return {
-      opa: {
-        disableOpa: configService.get<string>("opa.disable") === "true",
-        baseUrl: configService.get<string>("opa.url"),
-        policyPackage: configService.get<string>("opa.package"),
-        opaClient: {
-          timeout: configService.get<number>("opa.opaClient.timeout"),
-        },
+      getDataManager: async () => {
+        return new TypeOrmDataManager(ds, ds.createQueryRunner());
       },
-      auth: {
-        disableAuth: configService.getOrThrow<string>("auth.disableAuth") === "true",
-        authIssuers: configService
-          .get<string>("auth.issuers")
-          ?.trim()
-          .split(","),
-        authKeys: configService.get("auth.keys"),
-      },
-    } as AuthModuleOptions;
+    };
   },
-  inject: [ConfigService],
-  imports: [ConfigModule],
-}),
+  inject: [DataSource],
+})
 ```
 
