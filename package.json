@@ -4,6 +4,9 @@
   "author": "msg systems ag",
   "license": "Apache-2.0",
   "private": false,
+  "resolutions": {
+    "braces": "3.0.3"
+  },
   "dependencies": {
     "@nestjs/common": "^10.3.10",
     "reflect-metadata": "^0.2.2",
