@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { DataManager } from "../model/DataManager";
-import TransactionHelper from "../model/TransactionHelper";
-import Transactional from "./Transactional";
+import { TransactionHelper } from "../model/TransactionHelper";
+import { Transactional } from "./Transactional";
 import { Test } from "@nestjs/testing";
 
 @Injectable()
@@ -82,6 +82,6 @@ describe("transactional", () => {
   it("should propagate throws when manager is defined", async () => {
     transactionHelper.getStoredManager.mockReturnValue({} as DataManager);
 
-    await expect(mock.valueThrow()).rejects.toBe("ERR");
+    await expect(mock.valueThrow()).rejects.toThrow("ERR");
   });
 });

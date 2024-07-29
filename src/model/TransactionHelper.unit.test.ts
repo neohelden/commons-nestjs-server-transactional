@@ -1,5 +1,6 @@
 import { DataManager } from "./DataManager";
-import TransactionHelper, {
+import {
+  TransactionHelper,
   TransactionHelperOptions,
 } from "./TransactionHelper";
 
