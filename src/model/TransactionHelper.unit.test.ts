@@ -3,6 +3,7 @@ import {
   TransactionHelper,
   TransactionHelperOptions,
 } from "./TransactionHelper";
+import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 describe("transactionHelper", () => {
   let helper: TransactionHelper;
@@ -20,7 +21,9 @@ describe("transactionHelper", () => {
       release: jest.fn(),
     };
     transactionHelperOptionsMock = {
-      getDataManager: jest.fn().mockResolvedValue(dataManagerMock),
+      getDataManager: jest
+        .fn<() => Promise<DataManager>>()
+        .mockResolvedValue(dataManagerMock),
     };
     helper = new TransactionHelper(transactionHelperOptionsMock);
   });
