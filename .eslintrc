@@ -1,0 +1,13 @@
+{
+  "root": true,
+  "extends": ["@neohelden"],
+  "parserOptions": {
+    "project": "tsconfig.json",
+    "sourceType": "module"
+  },
+  "env": {
+    "node": true
+  },
+  "rules": {},
+  "plugins": []
+}
