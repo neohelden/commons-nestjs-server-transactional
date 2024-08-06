@@ -37,11 +37,11 @@
     "build": "tsc -p tsconfig.build.json",
     "lint": "eslint src && prettier -c ."
   },
-  "main": "dist/index.js",
+  "main": "dist/lib.js",
   "files": [
     "dist/**/*"
   ],
-  "types": "dist/index.d.ts",
+  "types": "dist/lib.d.ts",
   "jest": {
     "testEnvironment": "node",
     "collectCoverage": true,
