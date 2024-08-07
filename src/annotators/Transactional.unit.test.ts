@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { DataManager } from "../model/DataManager";
 import { TransactionHelper } from "../model/TransactionHelper";
 import { Transactional } from "./Transactional";
+import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { Test } from "@nestjs/testing";
 
 @Injectable()
@@ -31,7 +32,7 @@ describe("transactional", () => {
   beforeEach(async () => {
     transactionHelper = {
       getStoredManager: jest.fn(),
-      transaction: jest.fn(),
+      transaction: jest.fn<() => Promise<never>>(),
     };
 
     const module = await Test.createTestingModule({
