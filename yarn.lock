@@ -667,10 +667,10 @@
     path-to-regexp "3.2.0"
     tslib "2.6.3"
 
-"@nestjs/platform-express@10.3.10":
-  version "10.3.10"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-10.3.10.tgz#45fa006605913d5aaa31bf99073136ad639939b4"
-  integrity sha512-wK2ow3CZI2KFqWeEpPmoR300OB6BcBLxARV1EiClJLCj4S1mZsoCmS0YWgpk3j1j6mo0SI8vNLi/cC2iZPEPQA==
+"@nestjs/platform-express@10.4.0":
+  version "10.4.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-10.4.0.tgz#d08f1df6790a5a108676cb3bdd0a991388289276"
+  integrity sha512-DxrNsqywNVRs+4tmEXKNotumXEEGw+EvG2f9MyvDnHYU7tCZAT9ZsVnT6waM3lrjSmyjMaae8JuiMI8bnZj44g==
   dependencies:
     body-parser "1.20.2"
     cors "2.8.5"
