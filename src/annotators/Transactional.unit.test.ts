@@ -35,14 +35,13 @@ describe("transactional", () => {
       transaction: jest.fn<() => Promise<never>>(),
     };
 
-    const module = await Test.createTestingModule({
+    const mod = await Test.createTestingModule({
       providers: [TransactionHelper, DecoratedMock],
     })
       .overrideProvider(TransactionHelper)
       .useValue(transactionHelper)
       .compile();
 
-    const mod = await module.createNestApplication();
     mock = await mod.get(DecoratedMock);
   });
 
