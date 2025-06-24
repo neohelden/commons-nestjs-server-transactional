@@ -23,7 +23,7 @@
     "eslint": "8.57.0",
     "jest": "30.0.2",
     "jest-sonar-reporter": "2.0.0",
-    "prettier": "3.5.3",
+    "prettier": "3.6.0",
     "ts-jest": "29.4.0",
     "typescript": "5.8.3",
     "@nestjs/common": "10.4.16",
