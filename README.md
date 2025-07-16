@@ -12,10 +12,11 @@ An example to load the module with TypeORM is:
 import {
   TransactionHelper,
   Transactional,
+  ReplicationMode,
 } from "@neohelden/nestjs-server-transactional";
 
 class BookService {
-  @Transaction()
+  @Transactional({ replicationMode: ReplicationMode.MASTER })
   async save(book: Book): Promise<Book> {
     repository.save(book);
     return book;
@@ -43,8 +44,20 @@ Example:
 
 ```typescript
 TransactionModule.forRoot({
-  getDataManager: async () => {
+  getDataManager: async (replicationMode: ReplicationMode) => {
+    // Here you can return a DataManager instance based on the replication mode
+    // For example, you might return a master DataManager for MASTER mode
     return new DataManager();
   },
 });
 ```
+
+# Replication Mode
+
+Databases usually support a replication feature. In this system, an operation can either be directed torward a master or a slave database.
+This module makes loose assumptions about the underlying database and its replication capabilities.
+Therefore, the `ReplicationMode` enum is used to indicate the desired replication mode for a transaction.
+The available modes are:
+
+- `MASTER`: The transaction will be executed on the master database.
+- `SLAVE`: The transaction will be executed on a slave database.

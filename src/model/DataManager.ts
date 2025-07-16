@@ -2,6 +2,8 @@
  * A DataManager is an object that manages a transaction. It is used to start, commit, and rollback
  */
 
+import { ReplicationMode } from "./ReplicationMode";
+
 export interface DataManager {
   /**
    * Returns the transaction ID of the current transaction - useful for logging
@@ -10,7 +12,7 @@ export interface DataManager {
   /**
    * Starts a transaction in the given data manager
    */
-  startTransaction(): Promise<void>;
+  startTransaction(mode: ReplicationMode): Promise<void>;
   /**
    * Commits the transaction in the given data manager.
    * This method is executed after the annotated code is run.

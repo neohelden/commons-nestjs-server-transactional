@@ -1,11 +1,18 @@
 import { Inject, Logger } from "@nestjs/common";
 import { TransactionHelper } from "../model/TransactionHelper";
+import { ReplicationMode } from "../model/ReplicationMode";
 
 export interface TransactionalOptions {
   /**
    * Whether to log the timings of the transaction
    */
   timings?: boolean;
+
+  /**
+   * The replication mode to use for the transaction.
+   * If not set, the default is MASTER.
+   */
+  replicationMode?: ReplicationMode;
 }
 
 const MICROSECONDS_IN_SECONDS = 1e9;
@@ -49,7 +56,10 @@ export function Transactional(options?: TransactionalOptions): MethodDecorator {
       }
 
       try {
-        return await helper.transaction(() => originalMethod.apply(this, args));
+        return await helper.transaction(
+          () => originalMethod.apply(this, args),
+          { replicationMode: options?.replicationMode },
+        );
       } catch (e) {
         logger.debug("Error in transactional method", e);
         throw e;
@@ -64,9 +74,7 @@ export function Transactional(options?: TransactionalOptions): MethodDecorator {
       }
     };
 
-    Object.defineProperty(descriptor.value, "name", {
-      value: originalName,
-    });
+    Object.defineProperty(descriptor.value, "name", { value: originalName });
 
     return descriptor;
   };
