@@ -59,5 +59,5 @@ This module makes loose assumptions about the underlying database and its replic
 Therefore, the `ReplicationMode` enum is used to indicate the desired replication mode for a transaction.
 The available modes are:
 
-- `MASTER`: The transaction will be executed on the master database.
+- `MASTER`: The transaction will be executed on the master database. If not specified, this is the default mode.
 - `SLAVE`: The transaction will be executed on a slave database.
