@@ -2,13 +2,20 @@ import { Inject, Injectable, Logger, Scope } from "@nestjs/common";
 import { AsyncLocalStorage } from "async_hooks";
 import { getTransactionHelperOptionsToken } from "./TransactionHelperOptionsToken";
 import { DataManager } from "./DataManager";
+import { ReplicationMode } from "./ReplicationMode";
 
 export interface TransactionHelperOptions<T extends DataManager> {
   /**
    * Returns the {@link DataManager} instance.
    * This instance can be created according to desired specifications.
+   *
+   * @param replicationMode The replication mode to use for the transaction. If not set, the default is MASTER.
    */
-  getDataManager(): Promise<T> | T;
+  getDataManager(replicationMode: ReplicationMode): Promise<T> | T;
+}
+
+export interface Replicateable {
+  replicationMode?: ReplicationMode;
 }
 
 /**
@@ -48,12 +55,15 @@ export class TransactionHelper<T extends DataManager = DataManager> {
    */
   public async transaction<A>(
     runInTransaction: (manager: T) => Promise<A>,
+    options: Replicateable = {},
   ): Promise<A> {
-    const [manager, fromStorage] = await this.getDataManager();
+    const [manager, fromStorage] = await this.getDataManager(options);
 
     if (!fromStorage) {
       this.logger.verbose("Starting transaction");
-      await manager.startTransaction();
+      await manager.startTransaction(
+        options.replicationMode ?? ReplicationMode.MASTER,
+      );
       return this.storage.run(manager, () =>
         this.definetelyInAsyncScope<A>(fromStorage, manager, runInTransaction),
       );
@@ -94,13 +104,17 @@ export class TransactionHelper<T extends DataManager = DataManager> {
     }
   }
 
-  private async getDataManager(): Promise<[T, boolean]> {
+  private async getDataManager({
+    replicationMode,
+  }: Replicateable): Promise<[T, boolean]> {
     let dm = this.storage.getStore();
     let fromStorage = true;
 
     if (dm === undefined) {
       this.logger.debug("Creating new data manager");
-      dm = await this.options.getDataManager();
+      dm = await this.options.getDataManager(
+        replicationMode ?? ReplicationMode.MASTER,
+      );
       fromStorage = false;
     }
 
